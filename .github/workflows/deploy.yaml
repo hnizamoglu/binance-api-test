@@ -26,6 +26,10 @@ jobs:
         run: |
           ls -al
           ./gradlew build -x test
+      - name: Upload JAR to S3
+        run: |
+          mv build/libs/binance-api-test-0.0.1-SNAPSHOT.jar build/libs/app.jar
+          aws s3 cp build/libs/app.jar s3://trader-artifact-bucket
       - name: list aws instances
         run: | 
           ls -al build/libs
