@@ -26,9 +26,9 @@ jobs:
         run: |
           ls -al
           ./gradlew build -x test
-          ls -al build/libs
       - name: list aws instances
         run: | 
+          ls -al build/libs
           echo "Starting"
           INSTANCE_ID=$(aws ec2 describe-instances --filters "Name=tag:Name,Values=trader" | jq '.Reservations[0].ReservationId')
           echo $INSTANCE_ID
