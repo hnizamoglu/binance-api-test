@@ -24,7 +24,6 @@ jobs:
 #          aws-region: eu-central-1
       - name: Build
         run: |
-          ls -al
           ./gradlew build -x test
       - name: Upload JAR to S3
         run: |

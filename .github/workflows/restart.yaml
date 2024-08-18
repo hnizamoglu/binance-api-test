@@ -1,0 +1,21 @@
+name: AWS Deploy Flow
+run-name: Deploy to AWS
+on:
+  release:
+    types: [released]
+env:
+  AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+  AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+  AWS_DEFAULT_REGION: 'eu-central-1'
+  AWS_DEFAULT_OUTPUT: json
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Print running processes
+        run: |
+          INSTANCE_ID=$(aws ec2 describe-instances --filters "Name=tag:Name,Values=trader" | jq '.Reservations[0].ReservationId')
+          aws ssm send-command \ 
+            --document-name "AWS-RunShellScript" \
+            --targets "Key=tag:Name,Values=trader" \
+            --parameters 'commands=["AWS_ACCESS_KEY_ID=$AWS_ACCESS_KEY_ID AWS_SECRET_ACCESS_KEY=$AWS_SECRET_ACCESS_KEY aws s3 ls s3://trader-artifact-bucket"]'
