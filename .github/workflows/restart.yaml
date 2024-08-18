@@ -1,5 +1,5 @@
-name: Restart Application
-run-name: Restart Application
+name: Restart App
+run-name: Restart App
 on:
   release:
     types: [released]

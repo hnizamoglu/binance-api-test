@@ -1,5 +1,5 @@
-name: AWS Deploy Flow
-run-name: Deploy to AWS
+name: Build & Upload
+run-name: Build & Upload
 on:
   push:
     branches:
