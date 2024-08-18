@@ -1,15 +1,16 @@
 name: AWS Deploy Flow
 run-name: Not sure what this is
 on: [push]
+env:
+  AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+  AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+  AWS_DEFAULT_REGION: 'eu-central-1'
 jobs:
   deploy:
     runs-on: ubuntu-latest
     steps:
-      - run: | 
+      - name: list aws instances
+        run: | 
           echo "Starting"
           INSTANCE_ID=$(aws ec2 describe-instances --filters "Name=tag:Name,Values=trader" | jq '.Reservations[0].ReservationId')
           echo $INSTANCE_ID
-        env:
-          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
-          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          AWS_DEFAULT_REGION: 'eu-central-1'
