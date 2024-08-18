@@ -21,5 +21,5 @@ jobs:
       - name: list aws instances
         run: | 
           echo "Starting"
-          aws ec2 describe-instances --filters "Name=tag:Name,Values=trader" --debug
+          INSTANCE_ID=$(aws ec2 describe-instances --filters "Name=tag:Name,Values=trader" | jq '.Reservations[0].ReservationId')
           echo $INSTANCE_ID
