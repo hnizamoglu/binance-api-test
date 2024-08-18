@@ -12,6 +12,10 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
+      - uses: actions/setup-java@v4
+        with:
+          distribution: 'corretto'
+          java-version: '17'
 #      - name: Configure AWS Credentials
 #        uses: aws-actions/configure-aws-credentials@v4
 #        with:
@@ -22,6 +26,7 @@ jobs:
         run: |
           ls -al
           ./gradlew build -x test
+          ls -al build/libs
       - name: list aws instances
         run: | 
           echo "Starting"
