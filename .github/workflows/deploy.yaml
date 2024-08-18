@@ -27,5 +27,4 @@ jobs:
         run: | 
           echo "Starting"
           aws ec2 describe-instances --filters "Name=tag:Name,Values=trader" --debug
-#          INSTANCE_ID=$(aws ec2 describe-instances --filters "Name=tag:Name,Values=trader"  --debug)
           echo $INSTANCE_ID
