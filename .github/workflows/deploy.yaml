@@ -18,6 +18,10 @@ jobs:
 #          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
 #          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
 #          aws-region: eu-central-1
+      - name: Build
+        run: |
+          ls -al
+          ./gradlew build -x test
       - name: list aws instances
         run: | 
           echo "Starting"
