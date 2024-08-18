@@ -17,4 +17,4 @@ jobs:
           aws ssm send-command \
             --document-name "AWS-RunShellScript" \
             --targets "Key=tag:Name,Values=trader" \
-            --parameters 'commands=["kill $(ps -ef | awk \'/[j]ava -jar/{print $2}\')","rm app.jar","AWS_ACCESS_KEY_ID='$AWS_ACCESS_KEY_ID' AWS_SECRET_ACCESS_KEY='$AWS_SECRET_ACCESS_KEY' aws s3 cp s3://trader-artifact-bucket/app.jar .","java -jar app.jar &"]'
+            --parameters 'commands=["AWS_ACCESS_KEY_ID='$AWS_ACCESS_KEY_ID' AWS_SECRET_ACCESS_KEY='$AWS_SECRET_ACCESS_KEY' /home/ec2-user/restart.sh"]'
