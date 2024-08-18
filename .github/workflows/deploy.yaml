@@ -5,4 +5,5 @@ jobs:
   deploy:
     runs-on: ubuntu-latest
     steps:
-      - run: aws ec2 describe-instances --filters "Name=tag:Name,Values=trader"
+      - run: | 
+          aws ec2 describe-instances --filters "Name=tag:Name,Values=trader" | jq '.Reservations[0].ReservationId'
