@@ -9,3 +9,6 @@ jobs:
           echo "Starting"
           INSTANCE_ID=$(aws ec2 describe-instances --filters "Name=tag:Name,Values=trader" | jq '.Reservations[0].ReservationId')
           echo $INSTANCE_ID
+        env:
+          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
