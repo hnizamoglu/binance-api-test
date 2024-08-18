@@ -2,6 +2,8 @@ name: AWS Deploy Flow
 run-name: Deploy to AWS
 on:
   push:
+    branches:
+      - main
     tags-ignore:
       - v*
 
