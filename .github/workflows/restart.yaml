@@ -9,12 +9,12 @@ env:
   AWS_DEFAULT_REGION: 'eu-central-1'
   AWS_DEFAULT_OUTPUT: json
 jobs:
-  deploy:
+  restart-app:
     runs-on: ubuntu-latest
     steps:
-      - name: Print running processes
+      - name: Send Restart Command
         run: |
           aws ssm send-command \
             --document-name "AWS-RunShellScript" \
             --targets "Key=tag:Name,Values=trader" \
-            --parameters 'commands=["AWS_ACCESS_KEY_ID=$AWS_ACCESS_KEY_ID AWS_SECRET_ACCESS_KEY=$AWS_SECRET_ACCESS_KEY aws s3 ls s3://trader-artifact-bucket"]'
+            --parameters 'commands=["kill $(ps -ef | awk '/[j]ava -jar/{print $2}')","rm app.jar","AWS_ACCESS_KEY_ID='$AWS_ACCESS_KEY_ID' AWS_SECRET_ACCESS_KEY='$AWS_SECRET_ACCESS_KEY' aws s3 cp s3://trader-artifact-bucket/app.jar .","java -jar app.jar &"]'
