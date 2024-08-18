@@ -16,22 +16,10 @@ jobs:
         with:
           distribution: 'corretto'
           java-version: '17'
-#      - name: Configure AWS Credentials
-#        uses: aws-actions/configure-aws-credentials@v4
-#        with:
-#          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
-#          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-#          aws-region: eu-central-1
-      - name: Build
-        run: |
-          ./gradlew build -x test
-      - name: Upload JAR to S3
-        run: |
-          mv build/libs/binance-api-test-0.0.1-SNAPSHOT.jar build/libs/app.jar
-          aws s3 cp build/libs/app.jar s3://trader-artifact-bucket
-      - name: list aws instances
-        run: | 
-          ls -al build/libs
-          echo "Starting"
-          INSTANCE_ID=$(aws ec2 describe-instances --filters "Name=tag:Name,Values=trader" | jq '.Reservations[0].ReservationId')
-          echo $INSTANCE_ID
+#      - name: Build
+#        run: |
+#          ./gradlew build -x test
+#      - name: Upload JAR to S3
+#        run: |
+#          mv build/libs/binance-api-test-0.0.1-SNAPSHOT.jar build/libs/app.jar
+#          aws s3 cp build/libs/app.jar s3://trader-artifact-bucket
