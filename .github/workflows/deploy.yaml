@@ -6,4 +6,6 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - run: | 
-          aws ec2 describe-instances --filters "Name=tag:Name,Values=trader" | jq '.Reservations[0].ReservationId'
+          echo "Starting"
+          INSTANCE_ID=aws ec2 describe-instances --filters "Name=tag:Name,Values=trader" | jq '.Reservations[0].ReservationId'
+          echo $INSTANCE_ID
