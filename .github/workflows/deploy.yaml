@@ -28,7 +28,7 @@ jobs:
       - name: Upload JAR to S3
         run: |
           cp build/libs/binance-api-test-0.0.1-SNAPSHOT.jar build/libs/app.jar
-          aws s3 cp build/libs/app.jar s3://trader-artifact-bucket
+#          aws s3 cp build/libs/app.jar s3://trader-artifact-bucket
       - name: Login to Github CR
         uses: docker/login-action@v1
         with:
@@ -38,4 +38,4 @@ jobs:
       - name: Build & Push Image
         run: |
           docker build . --tag ghcr.io/hnizamoglu/binance-trader:latest
-          dockuer push ghcr.io/hnizamoglu/binance-trader:latest
+          docker push ghcr.io/hnizamoglu/binance-trader:latest
