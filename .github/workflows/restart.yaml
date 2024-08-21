@@ -18,3 +18,9 @@ jobs:
             --document-name "AWS-RunShellScript" \
             --targets "Key=tag:Name,Values=trader" \
             --parameters 'commands=["AWS_ACCESS_KEY_ID='$AWS_ACCESS_KEY_ID' AWS_SECRET_ACCESS_KEY='$AWS_SECRET_ACCESS_KEY' /home/ec2-user/restart.sh"]'
+      - name: Send Restart for Orchestrator
+        run: |
+          aws ssm send-command \
+            --document-name "AWS-RunShellScript" \
+            --targets "Key=tag:Name,Values=orchestrator" \
+            --parameters 'commands=["AWS_ACCESS_KEY_ID='$AWS_ACCESS_KEY_ID' AWS_SECRET_ACCESS_KEY='$AWS_SECRET_ACCESS_KEY' SPRING_PROFILES_ACTIVE=orchestrator /home/ec2-user/restart.sh"]'

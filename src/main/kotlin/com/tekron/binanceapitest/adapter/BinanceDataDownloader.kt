@@ -15,6 +15,7 @@ import java.io.FileOutputStream
 import java.nio.file.Files
 import java.nio.file.Path
 import java.time.*
+import kotlin.math.roundToInt
 import kotlin.system.exitProcess
 
 @Component
@@ -28,32 +29,33 @@ class BinanceDataDownloader(
     val SCHEME = "https"
     val KLINES_URL = "api/v3/klines"
     val INTERVAL = "5m"
-    val REQUEST_TICK_HOURS = 500L
 
     fun downloadData(
         symbol: CoinSymbol,
-        earliest: Long = LocalDateTime.now().minusMonths(12).toInstant(ZoneOffset.UTC).toEpochMilli()
+        earliest: Long = LocalDateTime.now().minusMonths(9).toInstant(ZoneOffset.UTC).toEpochMilli()
     ) {
         createDirectoryIfNotExists("historical-data")
-        createDirectoryIfNotExists("historical-data/${symbol.name}")
         val result = jsonMapper.createArrayNode()
-        val now = Instant.now()
-        val maxLimit = 2000L
+        val now = LocalDateTime.now().withMinute(0).withHour(0).withSecond(0).toInstant(ZoneOffset.UTC)
+        val maxLimit = 1000L
         val intervalDuration = INTERVAL.toDuration().multipliedBy(maxLimit)
+        val intervalDurationMs = intervalDuration.toMillis()
+        var repeat = (270.0 / intervalDuration.toDays()).roundToInt()
         var endTime: Long = now.toEpochMilli()
-        var startTime: Long = now.minus(intervalDuration).toEpochMilli()
-        while(true) {
+        var startTime: Long = endTime - intervalDurationMs
+        logger.info { "start: $startTime end: $endTime earliest: $earliest" }
 
+        while(repeat-- > 0) {
             logger.info { "downloading for endTime: $endTime" }
             val node = getJsonNode(symbol, start = startTime, end = endTime, maxLimit)
             result.addAll(node as ArrayNode)
             endTime = startTime
-            startTime -= intervalDuration.toMillis()
-            if(startTime < earliest) break
+            startTime -= intervalDurationMs
             Thread.sleep(2000)
         }
+
         logger.info { "download complete.writing content to file..." }
-        FileOutputStream(File("historical-data/${symbol.name}/data-${INTERVAL}.json")).use {
+        FileOutputStream(File("historical-data/${symbol.name}-${INTERVAL}.json")).use {
             it.write(result.toPrettyString().encodeToByteArray())
             it.flush()
         }

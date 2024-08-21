@@ -1,0 +1,31 @@
+services:
+  rabbitmq:
+    image: rabbitmq:3-management
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+    environment:
+      - 'RABBITMQ_DEFAULT_PASS=secret'
+      - 'RABBITMQ_DEFAULT_USER=myuser'
+    healthcheck:
+      test: [ "CMD", "curl", "-f", "http://localhost:15672" ]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+  trader:
+    image: binancetrader:latest
+    deploy:
+      mode: replicated
+      replicas: 3
+    depends_on:
+      - rabbitmq
+    links:
+      - rabbitmq
+  orchestrator:
+    image: binancetrader:latest
+    environment:
+      - 'SPRING_PROFILES_ACTIVE=orchestrator'
+    depends_on:
+      - rabbitmq
+    links:
+      - rabbitmq

@@ -20,6 +20,7 @@ repositories {
 
 dependencies {
     implementation("org.springframework.boot:spring-boot-starter")
+    implementation("org.springframework.boot:spring-boot-starter-amqp")
     implementation("org.jetbrains.kotlin:kotlin-reflect")
     implementation("com.squareup.okhttp3:okhttp:4.12.0")
     implementation("com.fasterxml.jackson.core:jackson-databind:2.17.2")
@@ -30,6 +31,7 @@ dependencies {
     implementation("org.slf4j:slf4j-api:2.0.16")
     implementation("org.telegram:telegrambots-longpolling:7.7.3")
     implementation("org.telegram:telegrambots-client:7.7.3")
+
 
     testImplementation("io.mockk:mockk:1.13.12")
     testImplementation("org.springframework.boot:spring-boot-starter-test")

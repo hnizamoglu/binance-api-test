@@ -1,0 +1,7 @@
+spring:
+  application:
+    name: binance-api-test
+  rabbitmq:
+    username: myuser
+    password: secret
+    host: rabbitmq

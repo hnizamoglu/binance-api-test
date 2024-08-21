@@ -27,12 +27,14 @@ class SimulationEngineTest {
         CoinSymbol.entries.forEach{
             println("------------")
             logger.info { it.name }
-            val sellRecords = BinanceDataParser().parse(File("historical-data/${it.name}/data-5m.json")).sortedBy { it.openTime }
-            val buyRecords = BinanceDataParser().parse(File("${it.name}.json")).sortedBy { it.openTime }
+            val sellRecords = BinanceDataParser().parse(File("historical-data/${it.name}-5m.json")).sortedBy { it.openTime }
+            val buyRecords = BinanceDataParser().parse(File("historical-data/${it.name}-4h.json")).sortedBy { it.openTime }
             val engine = SimulationEngine(
                 buyRecords = buyRecords,
                 sellRecords = sellRecords,
-                multiplier = 1.1,
+                multiplier = 1.05,
+                profitThreshold = 0.04,
+                lossThreshold = 0.05
             )
             val buyPoints = engine.work()
             allBuyPoints.addAll(buyPoints)
@@ -225,7 +227,7 @@ class SimulationEngineTest {
         var match = 0
         var fail = 0
         logger.info { "total buy points: ${points.size}" }
-        points.forEach {
+        points.sortedBy { it.time }.forEach {
             if (it.isSuccess!!) {
                 match++
             } else {
@@ -233,6 +235,8 @@ class SimulationEngineTest {
             }
             logger.info {
                 "dir: ${it.tradeDirection} " +
+                        "buyTime: ${it.time} " +
+                        "sellTime: ${it.sellRecord?.openTime} " +
                         "success: ${it.isSuccess} " +
                         "buyPrice: ${it.buyPrice.toString(3)}, " +
                         "targetPrice:${it.targetPrice.toString(3)}, " +

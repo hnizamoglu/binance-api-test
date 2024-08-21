@@ -4,13 +4,15 @@ import com.binance.connector.client.impl.spot.Trade
 import com.tekron.binanceapitest.model.MarketDataRecord
 import com.tekron.binanceapitest.strategy.TradeDirection
 import io.github.oshai.kotlinlogging.KotlinLogging
+import java.time.LocalDateTime
+import java.time.ZoneOffset
 
 class SimulationEngine(
     val buyRecords: List<MarketDataRecord>,
     val sellRecords: List<MarketDataRecord>,
     val multiplier: Double = 1.1,
-    val profitThreshold: Double = 0.1,
-    val lossThreshold: Double = 0.1,
+    val profitThreshold: Double = 0.05,
+    val lossThreshold: Double = 0.05,
 ) {
     private val logger = KotlinLogging.logger {  }
 
@@ -20,24 +22,52 @@ class SimulationEngine(
             computeTradeDirection(dataRecord.open, dataRecord.high, dataRecord.low)?.let { direction ->
                 val price = computePrice(dataRecord.open, direction)
                 val targetPrice = computeTargetPrice(price, direction)
-                val tradePoint = checkSuccess(price, dataRecord, direction)
+                val actualBuyRecord = findActualBuyRecord(price, dataRecord.openTime, dataRecord.closeTime) ?: return@mapNotNull null
+                val tradePoint = checkSuccess(price, actualBuyRecord, direction)
                 BuyPoint(
-                    time = dataRecord.openTime,
+                    time = actualBuyRecord.openTime,
                     tradeDirection = direction,
                     buyPrice = price,
                     targetPrice = targetPrice,
                     multiplier = multiplier,
                     isSuccess = tradePoint.isSuccess,
-                    openPrice = dataRecord.open,
-                    closePrice = dataRecord.close,
-                    highPrice = dataRecord.high,
-                    lowPrice = dataRecord.low,
+                    openPrice = actualBuyRecord.open,
+                    closePrice = actualBuyRecord.close,
+                    highPrice = actualBuyRecord.high,
+                    lowPrice = actualBuyRecord.low,
                     duration = null,
                     marketDataRecord = dataRecord,
                     sellRecord = tradePoint.point
                 )
             }
         }
+    }
+
+    private fun findActualBuyRecord(
+        price: Double,
+        openTime: LocalDateTime,
+        closeTime: LocalDateTime
+    ): MarketDataRecord? {
+        return sellRecords
+            .filter {
+//                !it.openTime.isBefore(openTime) && !it.closeTime.isAfter(closeTime)
+                it.openTime >= openTime && it.closeTime <= closeTime
+            }
+            .also {
+                if(it.isEmpty()) {
+                    println("$price - ${openTime.toInstant(ZoneOffset.UTC).toEpochMilli()} - $closeTime")
+                    it.forEach { println(it) }
+                }
+            }
+            .sortedBy { it.openTime }
+            .find {
+                it.low <= price && price <= it.high
+            }.also {
+                if(it == null) {
+                    println("not found")
+                    println("$price - ${openTime.toInstant(ZoneOffset.UTC).toEpochMilli()} - $closeTime")
+                }
+            }
     }
 
     fun computeTargetPrice(price: Double, direction: TradeDirection): Double {
