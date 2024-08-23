@@ -4,10 +4,18 @@
             <pattern>%date %highlight(%-5level) %cyan(%logger{0}@[%-4.30thread]) - %msg%n</pattern>
         </encoder>
     </appender>
+    <appender name="Sentry" class="io.sentry.logback.SentryAppender">
+        <options>
+            <dsn>https://5c34ee67a57b60be3dcf5f0ad5dbab5d@o4507826178228224.ingest.de.sentry.io/4507826179866704</dsn>
+        </options>
+    </appender>
 
     <logger name="deng" level="DEBUG"/>
 
     <root level="INFO">
         <appender-ref ref="STDOUT" />
+    </root>
+    <root level="ERROR">
+        <appender-ref ref="Sentry" />
     </root>
 </configuration>

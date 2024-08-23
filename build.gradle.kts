@@ -3,11 +3,22 @@ plugins {
     kotlin("plugin.spring") version "1.9.24"
     id("org.springframework.boot") version "3.3.2"
     id("io.spring.dependency-management") version "1.1.6"
+    id("io.sentry.jvm.gradle") version "4.11.0"
 }
 
 group = "com.tekron"
 version = "0.0.1-SNAPSHOT"
 
+sentry {
+    // Generates a JVM (Java, Kotlin, etc.) source bundle and uploads your source code to Sentry.
+    // This enables source context, allowing you to see your source
+    // code as part of your stack traces in Sentry.
+    includeSourceContext = true
+
+    org = "tekron"
+    projectName = "kotlin"
+    authToken = "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"
+}
 java {
     toolchain {
         languageVersion = JavaLanguageVersion.of(17)

@@ -4,6 +4,8 @@ import com.tekron.binanceapitest.adapter.CoinSymbol
 import com.tekron.binanceapitest.model.MarketDataRecord
 import com.tekron.binanceapitest.parser.BinanceDataParser
 import com.tekron.binanceapitest.simulation.TradeEngine
+import io.github.oshai.kotlinlogging.KotlinLogging
+import io.sentry.Sentry
 import org.springframework.boot.autoconfigure.SpringBootApplication
 import org.springframework.boot.runApplication
 import org.springframework.scheduling.annotation.EnableScheduling
@@ -17,7 +19,17 @@ import java.time.ZoneId
 @EnableScheduling
 class BinanceApiTestApplication
 
+val logger = KotlinLogging.logger {  }
 fun main(args: Array<String>) {
+    Sentry.init {options ->
+        options.dsn = "https://5c34ee67a57b60be3dcf5f0ad5dbab5d@o4507826178228224.ingest.de.sentry.io/4507826179866704"
+        // Set tracesSampleRate to 1.0 to capture 100% of transactions for tracing.
+        // We recommend adjusting this value in production.
+        options.tracesSampleRate = 1.0
+        // When first trying Sentry it's good to see what the SDK is doing:
+        options.isDebug = true
+    }
+
     runApplication<BinanceApiTestApplication>(*args)
 //    CoinSymbol.entries.forEach{
 //        println(it.name)
