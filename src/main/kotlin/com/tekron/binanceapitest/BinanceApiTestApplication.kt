@@ -19,13 +19,13 @@ class BinanceApiTestApplication
 
 fun main(args: Array<String>) {
     runApplication<BinanceApiTestApplication>(*args)
-    CoinSymbol.entries.forEach{
-        println(it.name)
-        val sellRecords = BinanceDataParser().parse(File("${it.name}.json")).sortedBy { it.openTime }
-        val buyRecords = BinanceDataParser().parse(File("${it.name}.json")).sortedBy { it.openTime }
-        val engine = TradeEngine(buyRecords, sellRecords)
-        engine.work()
-    }
+//    CoinSymbol.entries.forEach{
+//        println(it.name)
+//        val sellRecords = BinanceDataParser().parse(File("${it.name}.json")).sortedBy { it.openTime }
+//        val buyRecords = BinanceDataParser().parse(File("${it.name}.json")).sortedBy { it.openTime }
+//        val engine = TradeEngine(buyRecords, sellRecords)
+//        engine.work()
+//    }
 }
 
 class CsvParser {

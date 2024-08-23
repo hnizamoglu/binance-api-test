@@ -13,16 +13,16 @@ services:
       timeout: 10s
       retries: 5
   trader:
-    image: binancetrader:latest
+    image: ghcr.io/hnizamoglu/binance-trader:latest
     deploy:
       mode: replicated
-      replicas: 3
+      replicas: 2
     depends_on:
       - rabbitmq
     links:
       - rabbitmq
   orchestrator:
-    image: binancetrader:latest
+    image: ghcr.io/hnizamoglu/binance-trader:latest
     environment:
       - 'SPRING_PROFILES_ACTIVE=orchestrator'
     depends_on:

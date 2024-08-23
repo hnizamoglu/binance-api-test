@@ -4,4 +4,4 @@ spring:
   rabbitmq:
     username: myuser
     password: secret
-    host: rabbitmq
+    host: ${RABBIT_HOST:rabbitmq}
