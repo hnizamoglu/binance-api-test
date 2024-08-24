@@ -17,7 +17,6 @@ class Receiver(
 
     @RabbitHandler
     fun receive(message: String) {
-        Sentry.captureMessage("Processing $message")
         processor.process(CoinSymbol.valueOf(message))
     }
 }
