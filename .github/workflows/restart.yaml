@@ -18,10 +18,10 @@ jobs:
           aws ssm send-command \
             --document-name "AWS-RunShellScript" \
             --targets "Key=tag:type,Values=trader" \
-            --parameters 'commands=["AWS_ACCESS_KEY_ID='$AWS_ACCESS_KEY_ID' AWS_SECRET_ACCESS_KEY='$AWS_SECRET_ACCESS_KEY' aws s3 cp s3://trader-artifact-bucket/restart-trader.sh /home/ec2-user/restart-trader.sh", "chmod 755 /home/ec2-user/restart-trader.sh", "sh /home/ec2-user/restart-trader.sh"]'
+            --parameters 'commands=["AWS_ACCESS_KEY_ID='$AWS_ACCESS_KEY_ID' AWS_SECRET_ACCESS_KEY='$AWS_SECRET_ACCESS_KEY' aws s3 cp s3://trader-artifact-bucket/restart-trader.sh /home/ec2-user/restart-trader.sh", "chmod 755 /home/ec2-user/restart-trader.sh", "AWS_ACCESS_KEY_ID='$AWS_ACCESS_KEY_ID' AWS_SECRET_ACCESS_KEY='$AWS_SECRET_ACCESS_KEY' sh /home/ec2-user/restart-trader.sh"]'
       - name: Send Restart for Orchestrator
         run: |
           aws ssm send-command \
             --document-name "AWS-RunShellScript" \
             --targets "Key=tag:type,Values=orchestrator" \
-            --parameters 'commands=["AWS_ACCESS_KEY_ID='$AWS_ACCESS_KEY_ID' AWS_SECRET_ACCESS_KEY='$AWS_SECRET_ACCESS_KEY' aws s3 cp s3://trader-artifact-bucket/restart-orchestrator.sh /home/ec2-user/restart-orchestrator.sh", "chmod 755 /home/ec2-user/restart-orchestrator.sh", "sh /home/ec2-user/restart-orchestrator.sh"]'
+            --parameters 'commands=["AWS_ACCESS_KEY_ID='$AWS_ACCESS_KEY_ID' AWS_SECRET_ACCESS_KEY='$AWS_SECRET_ACCESS_KEY' aws s3 cp s3://trader-artifact-bucket/restart-orchestrator.sh /home/ec2-user/restart-orchestrator.sh", "chmod 755 /home/ec2-user/restart-orchestrator.sh", "AWS_ACCESS_KEY_ID='$AWS_ACCESS_KEY_ID' AWS_SECRET_ACCESS_KEY='$AWS_SECRET_ACCESS_KEY' sh /home/ec2-user/restart-orchestrator.sh"]'
