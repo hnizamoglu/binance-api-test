@@ -17,11 +17,11 @@ jobs:
         run: |
           aws ssm send-command \
             --document-name "AWS-RunShellScript" \
-            --targets "Key=tag:Name,Values=trader" \
+            --targets "Key=tag:type,Values=trader" \
             --parameters 'commands=["aws s3 cp s3://trader-artifact-bucket/restart-trader.sh /home/ec2-user/restart-trader.sh", "chmod 755 /home/ec2-user/restart-trader.sh", "sh /home/ec2-user/restart-trader.sh"]'
       - name: Send Restart for Orchestrator
         run: |
           aws ssm send-command \
             --document-name "AWS-RunShellScript" \
-            --targets "Key=tag:Name,Values=orchestrator" \
+            --targets "Key=tag:type,Values=orchestrator" \
             --parameters 'commands=["aws s3 cp s3://trader-artifact-bucket/restart-orchestrator.sh /home/ec2-user/restart-orchestrator.sh", "chmod 755 /home/ec2-user/restart-orchestrator.sh", "sh /home/ec2-user/restart-orchestrator.sh"]'
