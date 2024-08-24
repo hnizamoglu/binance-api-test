@@ -1,6 +1,11 @@
 name: Restart App
 run-name: Restart App
 on:
+  workflow_run:
+    workflows:
+      - "Build & Upload"
+    types:
+      - completed
   push:
     paths:
       - '**deploy-tag.txt'
