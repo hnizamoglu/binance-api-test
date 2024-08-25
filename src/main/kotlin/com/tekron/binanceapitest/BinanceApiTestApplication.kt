@@ -1,23 +1,29 @@
 package com.tekron.binanceapitest
 
-import com.tekron.binanceapitest.adapter.CoinSymbol
+import ch.qos.logback.classic.LoggerContext
 import com.tekron.binanceapitest.model.MarketDataRecord
-import com.tekron.binanceapitest.parser.BinanceDataParser
-import com.tekron.binanceapitest.simulation.TradeEngine
 import io.github.oshai.kotlinlogging.KotlinLogging
 import io.sentry.Sentry
+import org.slf4j.LoggerFactory
 import org.springframework.boot.autoconfigure.SpringBootApplication
 import org.springframework.boot.runApplication
 import org.springframework.scheduling.annotation.EnableScheduling
 import java.io.File
 import java.io.FileNotFoundException
+import java.net.InetAddress
 import java.time.Instant
 import java.time.LocalDateTime
 import java.time.ZoneId
 
 @SpringBootApplication
 @EnableScheduling
-class BinanceApiTestApplication
+class BinanceApiTestApplication{
+    init {
+        val host = InetAddress.getLocalHost().hostName
+        val logContext = LoggerFactory.getILoggerFactory() as LoggerContext
+        logContext.putProperty("host", host)
+    }
+}
 
 val logger = KotlinLogging.logger {  }
 fun main(args: Array<String>) {
@@ -29,7 +35,7 @@ fun main(args: Array<String>) {
         // When first trying Sentry it's good to see what the SDK is doing:
         options.isDebug = false
     }
-    Sentry.captureMessage("Starting")
+    logger.info { "Starting ${InetAddress.getLocalHost().hostName}" }
 
     runApplication<BinanceApiTestApplication>(*args)
 //    CoinSymbol.entries.forEach{

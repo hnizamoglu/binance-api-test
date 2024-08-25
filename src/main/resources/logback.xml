@@ -3,11 +3,25 @@
         <encoder>
             <pattern>%date %highlight(%-5level) %cyan(%logger{0}@[%-4.30thread]) - %msg%n</pattern>
         </encoder>
+<!--        <encoder class="net.logstash.logback.encoder.LoggingEventCompositeJsonEncoder">-->
+<!--            <providers>-->
+<!--                <timestamp />-->
+<!--                <loggerName />-->
+<!--                <logLevel />-->
+<!--                <message />-->
+<!--                <mdc />-->
+<!--                <context />-->
+<!--            </providers>-->
+<!--        </encoder>-->
     </appender>
     <appender name="Sentry" class="io.sentry.logback.SentryAppender">
         <options>
             <dsn>https://5c34ee67a57b60be3dcf5f0ad5dbab5d@o4507826178228224.ingest.de.sentry.io/4507826179866704</dsn>
         </options>
+    </appender>
+    <appender name="Logtail" class="com.logtail.logback.LogtailAppender">
+        <appName>binTraderTest</appName>
+        <sourceToken>LWdVq4pTV7rst1qG2HkrH2sH</sourceToken>
     </appender>
     <appender name="telegram" class="com.tekron.binanceapitest.logging.TelegramAppender"/>
 
@@ -15,6 +29,7 @@
 
     <root level="INFO">
         <appender-ref ref="STDOUT" />
+        <appender-ref ref="Logtail" />
     </root>
     <root level="ERROR">
         <appender-ref ref="Sentry" />

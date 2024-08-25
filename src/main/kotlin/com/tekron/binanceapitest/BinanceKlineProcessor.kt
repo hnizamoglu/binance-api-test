@@ -9,6 +9,7 @@ import com.tekron.binanceapitest.strategy.TradingStrategy
 import com.tekron.binanceapitest.strategy.TradingStrategyResult
 import io.github.oshai.kotlinlogging.KotlinLogging
 import org.springframework.stereotype.Component
+import java.net.InetAddress
 
 @Component
 class BinanceKlineProcessor(
@@ -19,9 +20,10 @@ class BinanceKlineProcessor(
 ) {
     private val logger = KotlinLogging.logger {  }
     private val alreadyProcessedTicks = mutableMapOf<String, Boolean>()
+    private val hostname = InetAddress.getLocalHost().hostName
 
     fun process(symbol: CoinSymbol) {
-        logger.info { "processing ${symbol.name}" }
+        logger.info { "processing ${symbol.name} - $hostname" }
         val resp = dataDownloader.getRecentKline(symbol)
         resp?.let{
             val lst = dataParser.parse(resp)

@@ -39,7 +39,10 @@ dependencies {
     implementation("io.github.binance:binance-connector-java:3.2.0")
     implementation("io.github.oshai:kotlin-logging-jvm:7.0.0")
     implementation("ch.qos.logback:logback-classic:1.5.6")
+    implementation("ch.qos.logback:logback-core:1.5.6")
+    implementation("net.logstash.logback:logstash-logback-encoder:8.0")
     implementation("org.slf4j:slf4j-api:2.0.16")
+    implementation("com.logtail:logback-logtail:0.3.3")
     implementation("org.telegram:telegrambots-longpolling:7.7.3")
     implementation("org.telegram:telegrambots-client:7.7.3")
 
