@@ -9,6 +9,7 @@
             <dsn>https://5c34ee67a57b60be3dcf5f0ad5dbab5d@o4507826178228224.ingest.de.sentry.io/4507826179866704</dsn>
         </options>
     </appender>
+    <appender name="telegram" class="com.tekron.binanceapitest.logging.TelegramAppender"/>
 
     <logger name="deng" level="DEBUG"/>
 
@@ -17,5 +18,6 @@
     </root>
     <root level="ERROR">
         <appender-ref ref="Sentry" />
+        <appender-ref ref="telegram" />
     </root>
 </configuration>
