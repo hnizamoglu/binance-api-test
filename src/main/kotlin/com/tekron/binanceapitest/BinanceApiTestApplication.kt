@@ -22,6 +22,7 @@ class BinanceApiTestApplication{
         val host = InetAddress.getLocalHost().hostName
         val logContext = LoggerFactory.getILoggerFactory() as LoggerContext
         logContext.putProperty("host", host)
+        logger.info { "Starting ${InetAddress.getLocalHost().hostName}" }
     }
 }
 
@@ -35,7 +36,6 @@ fun main(args: Array<String>) {
         // When first trying Sentry it's good to see what the SDK is doing:
         options.isDebug = false
     }
-    logger.info { "Starting ${InetAddress.getLocalHost().hostName}" }
 
     runApplication<BinanceApiTestApplication>(*args)
 //    CoinSymbol.entries.forEach{
