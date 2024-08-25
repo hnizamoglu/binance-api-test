@@ -151,6 +151,12 @@ enum class CoinSymbol(s: String) {
     BTCUSDC("BTCUSDC"),
     LINKUSDC("LINKUSDC"),
     UNIUSDC("UNIUSDC"),
+    AVAXUSDC("AVAXUSDC"),
+    BNBUSDC("BNBUSDC"),
+    MATICUSDC("MATICUSDC"),
+    OMNIUSDC("OMNIUSDC"),
+    OPUSDC("OPUSDC"),
+    XRPUSDC("XRPUSDC"),
 }
 
 fun Long.toInstant(): Instant {
